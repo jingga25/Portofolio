@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Analyst Portfolio — Property & Construction Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14243A;
+    --bg-2: #1B3049;
+    --line: #3A5C82;
+    --line-soft: rgba(140,180,224,0.14);
+    --blue: #8CC0F0;
+    --blue-bright: #C3E0FA;
+    --amber: #F0B85E;
+    --text: #F5F8FC;
+    --text-dim: #C7D6E8;
+    --text-faint: #91A8C2;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:48px 48px;
+  }
+  a{color:inherit}
+  ::selection{background:var(--amber);color:var(--bg)}
+
+  .sheet{max-width:1080px;margin:0 auto;padding:0 32px}
+
+  /* corner registration marks */
+  .reg-mark{position:fixed;width:20px;height:20px;pointer-events:none;z-index:50;opacity:0.5}
+  .reg-mark::before,.reg-mark::after{content:'';position:absolute;background:var(--blue)}
+  .reg-mark::before{width:100%;height:1px;top:50%}
+  .reg-mark::after{width:1px;height:100%;left:50%}
+  .reg-tl{top:20px;left:20px}
+  .reg-tr{top:20px;right:20px}
+  .reg-bl{bottom:20px;left:20px}
+  .reg-br{bottom:20px;right:20px}
+
+  /* header / title block, like a drawing's title block */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:56px 0 0;
+    position:relative;
+  }
+  .drawing-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    color:var(--blue);
+    text-transform:uppercase;
+    display:flex;
+    justify-content:space-between;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--line-soft);
+    margin-bottom:36px;
+  }
+  h1{
+    font-size:44px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    line-height:1.1;
+    margin-bottom:14px;
+  }
+  .role-line{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--amber);
+    letter-spacing:0.02em;
+    margin-bottom:28px;
+  }
+  .summary{
+    max-width:640px;
+    color:var(--text-dim);
+    font-size:17px;
+    line-height:1.75;
+    margin-bottom:36px;
+  }
+  .contact-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin-bottom:0;
+  }
+  .contact-item{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dim);
+    padding:14px 24px 14px 0;
+    border-right:1px solid var(--line-soft);
+    margin-right:24px;
+  }
+  .contact-item:last-child{border-right:none}
+  .contact-item span{display:block;color:var(--text-faint);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+  .contact-item a{color:var(--blue-bright);text-decoration:none;border-bottom:1px solid transparent}
+  .contact-item a:hover{border-bottom-color:var(--blue-bright)}
+
+  /* section framework */
+  section{padding:64px 0;border-bottom:1px solid var(--line-soft)}
+  .sheet-no{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  h2{
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:36px;
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  h2 .num{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--blue);
+    font-weight:400;
+  }
+
+  /* stack row for skills / summary stats */
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:8px;
+  }
+  .stat{
+    background:var(--bg);
+    padding:22px 20px;
+  }
+  .stat .n{font-family:var(--mono);font-size:28px;color:var(--blue-bright);font-weight:700}
+  .stat .l{font-size:12px;color:var(--text-dim);margin-top:6px}
+
+  /* project cards */
+  .project{
+    border:1px solid var(--line);
+    background:var(--bg-2);
+    margin-bottom:24px;
+    position:relative;
+  }
+  .project-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:24px 28px;
+    border-bottom:1px solid var(--line);
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .project-title{font-size:20px;font-weight:700;letter-spacing:-0.01em;margin-bottom:6px}
+  .project-sub{font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+  .project-tag{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border:1px solid rgba(224,167,72,0.35);
+    padding:5px 10px;
+    white-space:nowrap;
+    height:fit-content;
+  }
+  .project-body{padding:24px 28px}
+  .project-body p{color:var(--text-dim);font-size:15.5px;line-height:1.75;margin-bottom:16px}
+  .project-body p:last-child{margin-bottom:0}
+  .deliverables{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:16px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--blue-bright);
+    background:rgba(107,155,209,0.08);
+    border:1px solid var(--line);
+    padding:6px 12px;
+  }
+  .impact-line{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding-top:16px;
+    margin-top:16px;
+    border-top:1px solid var(--line-soft);
+    font-size:13.5px;
+  }
+  .impact-line .mark{color:var(--amber);font-family:var(--mono)}
+
+  /* skills grid */
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .skill-cell{
+    background:var(--bg);
+    padding:20px 22px;
+  }
+  .skill-cell h3{font-size:15px;color:var(--blue-bright);margin-bottom:12px;font-weight:600}
+  .skill-cell ul{list-style:none;font-size:14px;color:var(--text-dim)}
+  .skill-cell li{padding:4px 0;position:relative;padding-left:14px;line-height:1.6}
+  .skill-cell li::before{content:'—';position:absolute;left:0;color:var(--text-faint)}
+
+  /* footer / signature block */
+  footer{padding:56px 0 80px}
+  .signature-block{
+    border:1px solid var(--line);
+    padding:32px;
+    text-align:center;
+    background:var(--bg-2);
+  }
+  .signature-block .stamp{
+    display:inline-block;
+    border:2px solid var(--amber);
+    color:var(--amber);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    padding:8px 16px;
+    margin-bottom:18px;
+    transform:rotate(-1deg);
+  }
+  footer h3{font-size:22px;margin-bottom:10px}
+  footer p{color:var(--text-dim);font-size:14px;margin-bottom:20px}
+  .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:13px}
+  .footer-links a{color:var(--blue-bright);text-decoration:none;border-bottom:1px solid var(--line)}
+
+  @media (max-width:720px){
+    .sheet{padding:0 20px}
+    h1{font-size:32px}
+    .stat-row{grid-template-columns:repeat(2,1fr)}
+    .skill-grid{grid-template-columns:1fr}
+    .contact-strip{flex-direction:column}
+    .contact-item{border-right:none;border-bottom:1px solid var(--line-soft);padding:12px 0}
+  }
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="reg-mark reg-tl"></div>
+<div class="reg-mark reg-tr"></div>
+<div class="reg-mark reg-bl"></div>
+<div class="reg-mark reg-br"></div>
+
+<div class="sheet">
+
+  <header>
+    <div class="drawing-label">
+      <span>PORTFOLIO / BUSINESS ANALYST</span>
+      <span>SHEET 01 OF 01 · REV. 2026</span>
+    </div>
+    <h1>Business Analyst — Property &amp; Construction Systems</h1>
+    <div class="role-line">Procurement systems · Asset management · Approval workflows · 5+ years in property &amp; construction</div>
+    <p class="summary">Design end-to-end business processes and system specifications for national-scale property and construction companies — spanning goods/services procurement, project budgeting and tendering, corporate asset management, and cross-department document governance. Experienced in translating complex field operations into user flows, user stories, acceptance criteria, wireframes, and technical specs that development teams can execute directly. All case studies below are presented generically to preserve the confidentiality of client/company systems and internal processes.</p>
+    <div class="contact-strip">
+      <div class="contact-item"><span>Email</span><a href="mailto:jingga25@gmail.com">jingga25@gmail.com</a></div>
+      <div class="contact-item"><span>LinkedIn</span><a href="https://www.linkedin.com/in/santi-iviannurmali/" target="_blank" rel="noopener">linkedin.com/in/santi-iviannurmali</a></div>
+      <div class="contact-item"><span>Location</span>South Jakarta, Indonesia · Open to remote</div>
+      <div class="contact-item"><span>Availability</span>Full-time / Freelance / Contract</div>
+    </div>
+  </header>
+
+  <section id="stats">
+    <div class="sheet-no">// Scope of work summary</div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">5</div><div class="l">Enterprise system domains<br>designed end-to-end</div></div>
+      <div class="stat"><div class="n">20+</div><div class="l">End-to-end features<br>fully specified</div></div>
+      <div class="stat"><div class="n">55+</div><div class="l">Wireframes &amp; process flows<br>ready for development</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">Financial calculation schemes<br>(tax, payment terms, discounts)</div></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2><span class="num">01</span>Project case studies</h2>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Construction Procurement &amp; Tender System</div>
+          <div class="project-sub">Project budgeting · Owner Estimate · Competitive &amp; direct-appointment tender · Multi-tier approval</div>
+        </div>
+        <div class="project-tag">Enterprise ERP</div>
+      </div>
+      <div class="project-body">
+        <p>Redesigned the goods and services procurement flow for a national-scale construction company — covering project budget creation from purchase requests, multi-supplier tendering with multi-winner capability, and approval flows where budget and supplier proposals move forward together yet can still be decided independently when needed.</p>
+        <p>Formulated financial calculation logic that was a recurring source of errors in the legacy system: the correct sequencing of tiered discounts (per item, per order, per total), determining the proper tax base before VAT is calculated, and handling shipping costs and warranty retention.</p>
+        <div class="deliverables">
+          <span class="chip">User Flow</span>
+          <span class="chip">User Story (Agile)</span>
+          <span class="chip">Acceptance Criteria</span>
+          <span class="chip">Interactive Wireframe</span>
+          <span class="chip">API Spec</span>
+          <span class="chip">Database Design</span>
+        </div>
+        <div class="impact-line"><span class="mark">→</span>Standardized document numbering and approval flow so two budget types (goods and services) could be distinguished by the system without breaking naming conventions already familiar to users.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Corporate Asset Transfer Management</div>
+          <div class="project-sub">Bulk asset transfer across owners · Depreciation correction · Journal integration with the finance system</div>
+        </div>
+        <div class="project-tag">Asset Management</div>
+      </div>
+      <div class="project-body">
+        <p>Built a bulk asset transfer feature allowing a single transaction to move many assets from several previous owners to several new owners at once — replacing a manual one-by-one process previously prone to human error during employee resignation or department transfers.</p>
+        <p>Designed an accounting correction mechanism for assets incorrectly classified as depreciable. Core design principle: history is never deleted, only reversed through a reversal journal entry — keeping the audit trail complete and traceable at any time.</p>
+        <div class="deliverables">
+          <span class="chip">Business Process Design</span>
+          <span class="chip">Approval Workflow</span>
+          <span class="chip">API Integration Spec</span>
+          <span class="chip">Audit Trail Design</span>
+        </div>
+        <div class="impact-line"><span class="mark">→</span>Preserved financial reporting integrity by ensuring every correction is recorded as a new, accountable transaction rather than a deletion of historical data.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Cross-Department Document Governance</div>
+          <div class="project-sub">Document ownership by owner/department/project · Bulk reassignment on resignation/transfer</div>
+        </div>
+        <div class="project-tag">Document Governance</div>
+      </div>
+      <div class="project-body">
+        <p>Designed a bulk document-ownership transfer feature for when an owner resigns or is reassigned — allowing an admin to select many documents at once across categories (for a person who may handle more than one department), then move them to a new owner in a single controlled transaction with tiered approval.</p>
+        <div class="deliverables">
+          <span class="chip">User Flow</span>
+          <span class="chip">User Story</span>
+          <span class="chip">Acceptance Criteria</span>
+          <span class="chip">UI Wireframe</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Multi-Unit Physical Progress Validation for Change-Order Requests</div>
+          <div class="project-sub">Independent per-unit validation · Work-stage categories · Automatic cross-system blocking</div>
+        </div>
+        <div class="project-tag">Business Rule Engine</div>
+      </div>
+      <div class="project-body">
+        <p>Translated a physical-progress-based restriction policy for change-order requests into system logic that could handle real field conditions: a single work contract spanning many housing units with differing progress. Designed validation to run independently per unit — the same work item could be allowed on one unit yet automatically blocked on another based on each unit's stage threshold.</p>
+        <p>Mapped this feature's impact across the procurement, asset, and document systems simultaneously to ensure material data synced to inventory and stored documents stayed consistent with per-unit approval decisions.</p>
+        <div class="deliverables">
+          <span class="chip">Cross-System Impact Analysis</span>
+          <span class="chip">Business Rule Logic</span>
+          <span class="chip">Wireframe</span>
+          <span class="chip">Database Design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Staged Payment Terms &amp; Partial Goods-Receipt Reconciliation</div>
+          <div class="project-sub">Delivery-based staged payment terms · Cross-validation against received goods value</div>
+        </div>
+        <div class="project-tag">Financial Logic</div>
+      </div>
+      <div class="project-body">
+        <p>Formulated a payment-control formula for situations where goods are received in stages while the company already has agreed payment terms in place. Core principle: the valid payment amount is always the lesser of the payment-term limit and the value of goods actually received — applied consistently whether the payment amount is entered manually, follows the goods-receipt value, or follows the payment-term percentage.</p>
+        <div class="deliverables">
+          <span class="chip">Financial Calculation Logic</span>
+          <span class="chip">Edge Case Analysis</span>
+          <span class="chip">Interactive Calculator</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Simplifying Approval for Split Tender Awards</div>
+          <div class="project-sub">Automatic grouping by contractor &amp; tender · Approval corridor still anchored to the original tender value</div>
+        </div>
+        <div class="project-tag">Approval Workflow</div>
+      </div>
+      <div class="project-body">
+        <p>Designed a solution for cases where a tender awarded to one contractor gets split into many work-order documents due to per-document quantity limits — previously forcing approvers to approve the same business decision repeatedly. Solution: the system automatically groups documents by tender + contractor combination, with the option to approve an entire group at once or still act on a single document when an approver needs to hold one back selectively.</p>
+        <p>The hardest part: ensuring the approval-authority corridor still references the original tender value before it was split — not the value of each resulting document — to close a loophole where a high-value tender could slip through to a lower approval tier simply because it was broken into smaller pieces. Also designed a dual approval channel (dashboard and email) with race-condition handling when an approver acts from both channels simultaneously.</p>
+        <div class="deliverables">
+          <span class="chip">User Flow</span>
+          <span class="chip">User Story (Agile)</span>
+          <span class="chip">Acceptance Criteria</span>
+          <span class="chip">Interactive Wireframe</span>
+          <span class="chip">Multi-Channel Approval Design</span>
+        </div>
+        <div class="impact-line"><span class="mark">→</span>Reduced repetitive approval workload without loosening value control — decisions are still evaluated at the actual transaction scale.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">End-to-End Non-Formal Purchase (Petty Cash) Request Flow</div>
+          <div class="project-sub">Requests without formal purchase documents · Voucher &amp; realization integration with the finance system</div>
+        </div>
+        <div class="project-tag">Process &amp; Systems Design</div>
+      </div>
+      <div class="project-body">
+        <p>Designed an end-to-end low-value purchase request flow that runs without a formal purchase document — from the initial request, maximum-value validation and split-transaction detection, tiered approval, fund voucher issuance to the finance system, through matching received goods against the original request and closing realization.</p>
+        <p>Established key validation rules that were previously vulnerable to manual manipulation: received quantity can never exceed the requested quantity, any volume/type discrepancy requires a written explanation, and a single proof of payment cannot be used for more than one request. Also produced a complete technical spec (API endpoints, request/response schemas, database impact, and logic flow) so the development team could execute directly without additional clarification sessions.</p>
+        <div class="deliverables">
+          <span class="chip">User Flow</span>
+          <span class="chip">User Story (Agile)</span>
+          <span class="chip">Acceptance Criteria</span>
+          <span class="chip">Interactive Wireframe</span>
+          <span class="chip">API &amp; Database Spec</span>
+          <span class="chip">Cross-System Integration</span>
+        </div>
+        <div class="impact-line"><span class="mark">→</span>Closed a control gap on small, high-volume transactions — an area often overlooked for being low-value per transaction, despite significant cumulative risk.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Gap Audit of Partially-Built Asset &amp; Inventory Modules</div>
+          <div class="project-sub">Full-lifecycle gap analysis · Risk-based finance integration roadmap</div>
+        </div>
+        <div class="project-tag">Gap Analysis &amp; Roadmap</div>
+      </div>
+      <div class="project-body">
+        <p>Tasked with cleaning up two enterprise modules (asset management and inventory management) that were only partially built — some features already live, but with no comprehensive map of the full lifecycle or its integration points with the finance system. Built a systematic audit framework: mapped the complete lifecycle as a comparison baseline, identified integration gaps and duplicate data entry, then prioritized requirements by risk of impact to financial reporting and audit — not merely technical convenience.</p>
+        <div class="deliverables">
+          <span class="chip">Gap Analysis Matrix</span>
+          <span class="chip">Requirement Roadmap</span>
+          <span class="chip">Stakeholder Alignment Plan</span>
+          <span class="chip">User Flow &amp; Acceptance Criteria</span>
+        </div>
+        <div class="impact-line"><span class="mark">→</span>Gave the development team clear, stakeholder-validated work priorities, instead of patching whichever gap happened to be most visible.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="skills">
+    <h2><span class="num">02</span>Skills &amp; working methods</h2>
+    <div class="skill-grid">
+      <div class="skill-cell">
+        <h3>Analysis &amp; Documentation</h3>
+        <ul>
+          <li>User flow &amp; swimlane diagrams</li>
+          <li>Agile-format user stories</li>
+          <li>Measurable acceptance criteria</li>
+          <li>Business process mapping</li>
+          <li>Cross-system impact analysis</li>
+          <li>Gap analysis &amp; requirement roadmapping</li>
+        </ul>
+      </div>
+      <div class="skill-cell">
+        <h3>Systems Design</h3>
+        <ul>
+          <li>Interactive wireframes &amp; UI flows</li>
+          <li>API specs (endpoints, request/response)</li>
+          <li>Database schema design</li>
+          <li>Tiered &amp; multi-channel approval workflows</li>
+          <li>Cross-system (ERP) integration</li>
+        </ul>
+      </div>
+      <div class="skill-cell">
+        <h3>Industry Domain</h3>
+        <ul>
+          <li>Construction procurement &amp; tendering</li>
+          <li>Asset management &amp; depreciation</li>
+          <li>Inventory management &amp; stock valuation</li>
+          <li>Transaction taxation (VAT, withholding tax)</li>
+          <li>Payment terms &amp; installment schemes</li>
+          <li>Document &amp; audit governance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="signature-block">
+      <div class="stamp">Approved for review</div>
+      <h3>Open to remote Business Analyst / Systems Analyst roles</h3>
+      <p>Experienced in translating complex business requirements in the property and construction industry into technical documentation ready for engineering teams to execute — from flow diagrams to database schemas. System and company names in the case studies above have been generalized to preserve client data confidentiality.</p>
+      <div class="footer-links">
+        <a href="mailto:jingga25@gmail.com">Send email</a>
+        <a href="https://www.linkedin.com/in/santi-iviannurmali/" target="_blank" rel="noopener">View LinkedIn</a>
+        <a href="https://drive.google.com/file/d/1gCo9Jx9UXV_HRbbhsD_lyL8GGo8yOg6S/view?usp=drive_link" target="_blank" rel="noopener">Download CV (PDF)</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

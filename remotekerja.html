@@ -1,0 +1,1277 @@
+<title>RemoteKerja</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+/* ===== TOKENS — dark-first, vivid teal accent ===== */
+:root {
+  --bg:         #0D0F14;
+  --bg-2:       #151820;
+  --surface:    #1C202C;
+  --surface-2:  #232838;
+  --border:     #2A2F3F;
+  --border-2:   #353B50;
+  --fg:         #E8ECF5;
+  --fg-soft:    #8A92A8;
+  --fg-faint:   #4E5568;
+  --accent:     #00D4AA;
+  --accent-2:   #6C63FF;
+  --accent-3:   #FF6B6B;
+  --accent-glow:rgba(0,212,170,0.18);
+  --accent-bg:  rgba(0,212,170,0.10);
+  --ok:         #34D399;
+  --ok-bg:      rgba(52,211,153,0.10);
+  --warn:       #FBBF24;
+  --warn-bg:    rgba(251,191,36,0.10);
+  --bad:        #F87171;
+  --bad-bg:     rgba(248,113,113,0.10);
+  --f-ui:       'Plus Jakarta Sans', system-ui, sans-serif;
+  --f-mono:     'JetBrains Mono', monospace;
+  --r-sm:       6px;
+  --r-md:       12px;
+  --r-lg:       16px;
+  --r-xl:       20px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:         #F0F2F8;
+    --bg-2:       #E4E8F2;
+    --surface:    #FFFFFF;
+    --surface-2:  #F7F8FC;
+    --border:     #D8DCE8;
+    --border-2:   #C8CDD E;
+    --fg:         #0F1220;
+    --fg-soft:    #5A6078;
+    --fg-faint:   #9EA5BC;
+    --accent:     #009E7E;
+    --accent-2:   #5248D9;
+    --accent-3:   #E05252;
+    --accent-glow:rgba(0,158,126,0.15);
+    --accent-bg:  rgba(0,158,126,0.08);
+    --ok:         #059669;
+    --ok-bg:      rgba(5,150,105,0.08);
+    --warn:       #D97706;
+    --warn-bg:    rgba(217,119,6,0.08);
+    --bad:        #DC2626;
+    --bad-bg:     rgba(220,38,38,0.08);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg:         #F0F2F8;
+  --bg-2:       #E4E8F2;
+  --surface:    #FFFFFF;
+  --surface-2:  #F7F8FC;
+  --border:     #D8DCE8;
+  --border-2:   #C8CDE0;
+  --fg:         #0F1220;
+  --fg-soft:    #5A6078;
+  --fg-faint:   #9EA5BC;
+  --accent:     #009E7E;
+  --accent-2:   #5248D9;
+  --accent-3:   #E05252;
+  --accent-glow:rgba(0,158,126,0.15);
+  --accent-bg:  rgba(0,158,126,0.08);
+  --ok:         #059669;
+  --ok-bg:      rgba(5,150,105,0.08);
+  --warn:       #D97706;
+  --warn-bg:    rgba(217,119,6,0.08);
+  --bad:        #DC2626;
+  --bad-bg:     rgba(220,38,38,0.08);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-ui);
+  font-size: 14.5px;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; border: none; background: none; color: inherit; }
+input, select { font: inherit; }
+
+/* ===== NAV ===== */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 200;
+  background: rgba(13,15,20,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+:root[data-theme="light"] .nav,
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .nav { background: rgba(240,242,248,0.88); } }
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  height: 60px;
+  display: flex; align-items: center; gap: 16px;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1.125rem; font-weight: 800; letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-text { color: var(--fg); }
+.logo-text em { font-style: normal; color: var(--accent); }
+
+.search-wrap {
+  flex: 1; max-width: 440px;
+  position: relative;
+}
+.search-wrap input {
+  width: 100%; height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--fg);
+  padding: 0 40px 0 38px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-wrap input::placeholder { color: var(--fg-faint); }
+.search-icon, .search-clear {
+  position: absolute; top: 50%; transform: translateY(-50%);
+}
+.search-icon { left: 12px; color: var(--fg-faint); pointer-events: none; }
+.search-clear {
+  right: 10px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--border); color: var(--fg-soft);
+  display: none; align-items: center; justify-content: center;
+  font-size: 11px; transition: background 0.15s;
+}
+.search-clear.visible { display: flex; }
+.search-clear:hover { background: var(--border-2); }
+
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 36px; padding: 0 16px; border-radius: 10px;
+  font-size: 0.875rem; font-weight: 600;
+  transition: all 0.18s; white-space: nowrap; flex-shrink: 0;
+  position: relative; overflow: hidden;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: white; opacity: 0; transition: opacity 0.15s;
+  border-radius: inherit;
+}
+.btn:active::after { opacity: 0.07; }
+
+.btn-icon {
+  width: 36px; height: 36px; padding: 0;
+  border-radius: 10px; border: 1px solid var(--border);
+  color: var(--fg-soft); background: var(--surface);
+  transition: all 0.18s;
+}
+.btn-icon:hover { border-color: var(--border-2); color: var(--fg); background: var(--surface-2); }
+.btn-ghost { border: 1px solid var(--border); background: var(--surface); color: var(--fg-soft); }
+.btn-ghost:hover { border-color: var(--border-2); color: var(--fg); background: var(--surface-2); }
+.btn-accent {
+  background: var(--accent); color: #0D1410;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.btn-accent:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 28px var(--accent-glow);
+  transform: translateY(-1px);
+}
+.btn-accent:active { transform: translateY(0); }
+.btn-outline-accent {
+  border: 1px solid var(--accent); color: var(--accent);
+  background: var(--accent-bg);
+}
+.btn-outline-accent:hover { background: rgba(0,212,170,0.18); }
+
+/* ===== LAYOUT ===== */
+.layout {
+  max-width: 1280px; margin: 0 auto;
+  padding-top: 24px; padding-bottom: 60px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .sidebar.open { display: block; }
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+}
+.panel-title {
+  font-size: 0.6875rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fg-faint);
+  margin-bottom: 12px;
+}
+
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; }
+.stat-cell { background: var(--surface-2); padding: 12px 10px; text-align: center; }
+.stat-n {
+  font-size: 1.375rem; font-weight: 800; letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums; line-height: 1;
+  margin-bottom: 3px;
+}
+.stat-n.teal { color: var(--accent); }
+.stat-n.purple { color: var(--accent-2); }
+.stat-n.coral { color: var(--accent-3); }
+.stat-l { font-size: 0.6875rem; color: var(--fg-faint); }
+
+/* Chips */
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 0.8125rem; font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg-2); color: var(--fg-soft);
+  cursor: pointer; user-select: none;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.on { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+
+/* Range */
+.range-labels { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--fg-soft); margin-bottom: 10px; }
+.range-labels strong { color: var(--fg); font-variant-numeric: tabular-nums; }
+input[type=range] {
+  width: 100%; accent-color: var(--accent);
+  height: 4px; border-radius: 2px; margin-bottom: 6px; cursor: pointer;
+}
+
+/* Toggles */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0; border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+.toggle-row:first-child { border-top: none; }
+.toggle-label { font-size: 0.875rem; color: var(--fg-soft); pointer-events: none; }
+.tog {
+  width: 36px; height: 20px; border-radius: 10px;
+  background: var(--border-2); position: relative;
+  transition: background 0.2s; flex-shrink: 0;
+}
+.tog.on { background: var(--accent); }
+.tog::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 14px; height: 14px; border-radius: 50%; background: #fff;
+  transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.tog.on::after { left: 19px; }
+
+/* ===== MAIN ===== */
+.main { min-width: 0; }
+
+/* Ticker */
+.ticker {
+  background: linear-gradient(90deg, var(--accent-bg), var(--bg));
+  border: 1px solid rgba(0,212,170,0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+  font-size: 0.8125rem; color: var(--accent);
+}
+.ticker-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+.ticker-close {
+  margin-left: auto; color: var(--fg-faint);
+  width: 20px; height: 20px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+.ticker-close:hover { color: var(--fg); background: var(--border); }
+
+/* Top bar */
+.top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+}
+.result-count { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.02em; }
+.result-count span { color: var(--fg-faint); font-weight: 400; font-size: 1rem; }
+.view-sort { display: flex; gap: 8px; align-items: center; }
+.view-toggle { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.view-toggle button {
+  width: 34px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg-soft); background: var(--surface);
+  transition: all 0.15s;
+}
+.view-toggle button.on { background: var(--accent-bg); color: var(--accent); }
+.view-toggle button + button { border-left: 1px solid var(--border); }
+.sort-sel {
+  height: 34px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface); color: var(--fg);
+  padding: 0 28px 0 10px; font-size: 0.8125rem; font-weight: 500;
+  appearance: none; outline: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 3.5l3.5 3 3.5-3' stroke='%238A92A8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+}
+
+/* ===== JOB CARDS ===== */
+.job-list { display: flex; flex-direction: column; gap: 10px; }
+.job-list.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 640px) { .job-list.grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity: 0; transition: opacity 0.2s;
+}
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 24px var(--accent-glow), 0 0 0 1px var(--accent);
+  transform: translateY(-2px);
+}
+.card:hover::before { opacity: 1; }
+.card.featured { border-color: rgba(0,212,170,0.3); }
+.card.featured::before { opacity: 0.6; }
+
+.featured-label {
+  position: absolute; top: 0; right: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0D1410;
+  font-size: 0.625rem; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 0 var(--r-lg) 0 10px;
+}
+
+.card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.co-logo {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem; font-weight: 800;
+  border: 1px solid var(--border); flex-shrink: 0;
+}
+.card-meta { flex: 1; min-width: 0; }
+.card-title {
+  font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--fg); line-height: 1.3; margin-bottom: 2px;
+}
+.card-company { font-size: 0.8125rem; color: var(--fg-soft); }
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+.tag {
+  padding: 3px 8px; border-radius: 5px;
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.02em;
+}
+.tag-ft   { background: var(--accent-bg); color: var(--accent); }
+.tag-sk   { background: var(--bg-2); color: var(--fg-soft); border: 1px solid var(--border); }
+.tag-new  { background: var(--ok-bg); color: var(--ok); }
+.tag-hot  { background: var(--bad-bg); color: var(--bad); }
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.salary {
+  font-family: var(--f-mono);
+  font-size: 0.9375rem; font-weight: 600;
+  color: var(--accent); font-variant-numeric: tabular-nums;
+}
+.salary em { font-style: normal; font-size: 0.75rem; color: var(--fg-faint); font-family: var(--f-ui); }
+.card-info { display: flex; gap: 10px; align-items: center; }
+.info-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.75rem; color: var(--fg-faint);
+}
+.save-btn {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); color: var(--fg-faint);
+  flex-shrink: 0; transition: all 0.15s;
+}
+.save-btn:hover { border-color: var(--accent-3); color: var(--accent-3); background: var(--bad-bg); }
+.save-btn.on { background: var(--bad-bg); border-color: var(--accent-3); color: var(--accent-3); }
+
+.apply-btn {
+  padding: 5px 14px; border-radius: 8px;
+  background: var(--accent-bg); border: 1px solid rgba(0,212,170,0.3);
+  color: var(--accent); font-size: 0.8125rem; font-weight: 600;
+  transition: all 0.15s;
+}
+.apply-btn:hover { background: rgba(0,212,170,0.2); border-color: var(--accent); }
+
+/* ===== PAGINATION ===== */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 24px; }
+.pg {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8125rem; font-weight: 600;
+  border: 1px solid var(--border); color: var(--fg-soft);
+  transition: all 0.15s; background: var(--surface);
+}
+.pg:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.pg.on { background: var(--accent); border-color: var(--accent); color: #0D1410; }
+.pg.off { opacity: 0.3; pointer-events: none; }
+
+/* ===== MODAL ===== */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(5,7,12,0.75);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  width: 100%; max-width: 560px;
+  max-height: 85vh; overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.25s;
+  position: relative;
+}
+.overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  color: var(--fg-soft);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--border); color: var(--fg); }
+
+.modal-logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.modal-logo {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.125rem; font-weight: 800;
+}
+.modal-co { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.02em; }
+.modal-co-sub { font-size: 0.875rem; color: var(--fg-soft); margin-top: 2px; }
+
+.modal-salary {
+  font-family: var(--f-mono); font-size: 1.5rem; font-weight: 700;
+  color: var(--accent); margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.modal-salary em { font-style: normal; font-size: 0.875rem; color: var(--fg-faint); font-family: var(--f-ui); }
+
+.modal-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.meta-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 8px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 0.8125rem; color: var(--fg-soft);
+}
+
+.modal-section { margin-bottom: 18px; }
+.modal-section h4 {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--fg-faint); margin-bottom: 8px;
+}
+.modal-section p { font-size: 0.9rem; color: var(--fg-soft); line-height: 1.7; }
+.modal-section ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.modal-section ul li {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 0.875rem; color: var(--fg-soft);
+}
+.modal-section ul li::before {
+  content: '›'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.modal-actions { display: flex; gap: 8px; margin-top: 24px; }
+.modal-actions .btn { flex: 1; height: 42px; font-size: 0.9375rem; border-radius: 12px; }
+
+/* ===== AUTH MODAL ===== */
+.auth-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+.auth-tab {
+  flex: 1; padding: 10px; text-align: center;
+  font-size: 0.9rem; font-weight: 600; color: var(--fg-soft);
+  border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.15s;
+}
+.auth-tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 0.8125rem; font-weight: 600; color: var(--fg-soft); margin-bottom: 6px; display: block; }
+.form-input {
+  width: 100%; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg-2);
+  color: var(--fg); padding: 0 12px;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.form-hint { font-size: 0.8rem; color: var(--fg-faint); margin-top: 4px; }
+.form-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+.form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.form-divider span { font-size: 0.8rem; color: var(--fg-faint); }
+
+.oauth-btn {
+  width: 100%; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--fg); font-size: 0.875rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.15s; margin-bottom: 8px;
+}
+.oauth-btn:hover { border-color: var(--border-2); background: var(--bg-2); }
+
+/* ===== TOAST ===== */
+.toasts {
+  position: fixed; bottom: 20px; right: 20px; z-index: 900;
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.toast {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.875rem; min-width: 220px; max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  pointer-events: all;
+  animation: toastIn 0.3s ease forwards;
+}
+.toast.out { animation: toastOut 0.3s ease forwards; }
+@keyframes toastIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+@keyframes toastOut { from { opacity:1; transform: translateX(0); } to { opacity:0; transform: translateX(20px); } }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.toast-dot.teal { background: var(--accent); }
+.toast-dot.ok { background: var(--ok); }
+.toast-dot.warn { background: var(--warn); }
+
+/* ===== MOBILE FILTER ===== */
+.mobile-filter-toggle { display: none; }
+@media (max-width: 800px) { .mobile-filter-toggle { display: flex; } }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+/* focus rings */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="3" fill="#0D1410"/>
+          <path d="M8 2v1M8 13v1M2 8h1M13 8h1M4.22 4.22l.71.71M11.07 11.07l.71.71M4.22 11.78l.71-.71M11.07 4.93l.71-.71" stroke="#0D1410" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">Remote<em>Kerja</em></span>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Cari posisi, skill, atau perusahaan…" oninput="handleSearch(this)">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
+
+    <div class="nav-right">
+      <button class="btn btn-icon mobile-filter-toggle" onclick="toggleSidebar()" title="Filter">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+          <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn btn-icon" onclick="toggleTheme()" id="themeBtn" title="Ganti tema">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" id="themeIco">
+          <path d="M8 3a5 5 0 100 10A5 5 0 008 3z" fill="currentColor" opacity=".2"/>
+          <path d="M8 1v1M8 14v1M1 8h1M14 8h1M3.05 3.05l.7.7M12.25 12.25l.7.7M3.05 12.95l.7-.7M12.25 3.75l.7-.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+      <button class="btn btn-ghost" onclick="openAuth('login')">Masuk</button>
+      <button class="btn btn-accent" onclick="openAuth('register')">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Daftar Gratis
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== BODY ===== -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Stats -->
+    <div class="panel" style="padding:0; overflow:hidden;">
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-n teal">4.218</div>
+          <div class="stat-l">Lowongan aktif</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n purple">318</div>
+          <div class="stat-l">Baru hari ini</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n coral">92%</div>
+          <div class="stat-l">Fully remote</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n">67</div>
+          <div class="stat-l">Negara tersedia</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kategori -->
+    <div class="panel">
+      <div class="panel-title">Kategori</div>
+      <div class="chips" id="catChips">
+        <div class="chip on" onclick="toggleCat(this)">Semua</div>
+        <div class="chip" onclick="toggleCat(this)">Engineering</div>
+        <div class="chip" onclick="toggleCat(this)">Desain</div>
+        <div class="chip" onclick="toggleCat(this)">Produk</div>
+        <div class="chip" onclick="toggleCat(this)">Pemasaran</div>
+        <div class="chip" onclick="toggleCat(this)">Data</div>
+        <div class="chip" onclick="toggleCat(this)">Keuangan</div>
+        <div class="chip" onclick="toggleCat(this)">Dukungan</div>
+      </div>
+    </div>
+
+    <!-- Tipe -->
+    <div class="panel">
+      <div class="panel-title">Tipe Kerja</div>
+      <div class="chips">
+        <div class="chip on" onclick="this.classList.toggle('on')">Full-time</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Part-time</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Kontrak</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Freelance</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Magang</div>
+      </div>
+    </div>
+
+    <!-- Gaji -->
+    <div class="panel">
+      <div class="panel-title">Kisaran Gaji (USD/bln)</div>
+      <div class="range-labels">
+        <span>Min <strong id="salMin">$1.000</strong></span>
+        <span>Max <strong id="salMax">$8.000</strong></span>
+      </div>
+      <input type="range" min="0" max="10000" value="1000" step="500" oninput="updateSalMin(this.value)">
+      <input type="range" min="0" max="10000" value="8000" step="500" oninput="updateSalMax(this.value)">
+    </div>
+
+    <!-- Preferensi -->
+    <div class="panel">
+      <div class="panel-title">Preferensi</div>
+      <div class="toggle-row" onclick="this.querySelector('.tog').classList.toggle('on')">
+        <span class="toggle-label">Buka untuk WNI</span>
+        <div class="tog on"></div>
+      </div>
+      <div class="toggle-row" onclick="this.querySelector('.tog').classList.toggle('on')">
+        <span class="toggle-label">Visa sponsor tersedia</span>
+        <div class="tog"></div>
+      </div>
+      <div class="toggle-row" onclick="this.querySelector('.tog').classList.toggle('on')">
+        <span class="toggle-label">Pelatihan disediakan</span>
+        <div class="tog"></div>
+      </div>
+      <div class="toggle-row" onclick="this.querySelector('.tog').classList.toggle('on')">
+        <span class="toggle-label">Fleksibel jam kerja</span>
+        <div class="tog on"></div>
+      </div>
+    </div>
+
+    <!-- Zona Waktu -->
+    <div class="panel">
+      <div class="panel-title">Zona Waktu</div>
+      <div class="chips">
+        <div class="chip on" onclick="this.classList.toggle('on')">WIB (UTC+7)</div>
+        <div class="chip" onclick="this.classList.toggle('on')">WIT (UTC+9)</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Bebas zona</div>
+      </div>
+    </div>
+
+    <button class="btn btn-outline-accent" style="width:100%; height:40px;" onclick="resetFilters()">
+      Reset semua filter
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Ticker -->
+    <div class="ticker" id="ticker">
+      <div class="ticker-dot"></div>
+      <span>🔔 <strong>12 lowongan baru</strong> ditambahkan dalam 30 menit terakhir — cocok dengan profilmu.</span>
+      <button class="ticker-close" onclick="document.getElementById('ticker').remove()">✕</button>
+    </div>
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="result-count" id="resultCount">4.218 lowongan <span>ditemukan</span></div>
+      <div class="view-sort">
+        <div class="view-toggle">
+          <button class="on" id="listViewBtn" onclick="setView('list')" title="List">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="2" width="12" height="2.5" rx="1" fill="currentColor"/>
+              <rect x="1" y="5.75" width="12" height="2.5" rx="1" fill="currentColor"/>
+              <rect x="1" y="9.5" width="12" height="2.5" rx="1" fill="currentColor"/>
+            </svg>
+          </button>
+          <button id="gridViewBtn" onclick="setView('grid')" title="Grid">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="1" width="5.5" height="5.5" rx="1.5" fill="currentColor"/>
+              <rect x="7.5" y="1" width="5.5" height="5.5" rx="1.5" fill="currentColor"/>
+              <rect x="1" y="7.5" width="5.5" height="5.5" rx="1.5" fill="currentColor"/>
+              <rect x="7.5" y="7.5" width="5.5" height="5.5" rx="1.5" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <select class="sort-sel" onchange="sortJobs(this.value)">
+          <option value="newest">Terbaru</option>
+          <option value="salary">Gaji tertinggi</option>
+          <option value="az">Perusahaan A–Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Job list -->
+    <div class="job-list" id="jobList">
+
+      <div class="card featured" onclick="openJob(0)">
+        <div class="featured-label">Unggulan</div>
+        <div class="card-top">
+          <div class="co-logo" style="background:#0D2040;color:#5B9BD5;">St</div>
+          <div class="card-meta">
+            <div class="card-title">Senior Frontend Engineer</div>
+            <div class="card-company">Stripe · San Francisco (Remote)</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-new">Baru 2 jam</span>
+          <span class="tag tag-sk">React</span>
+          <span class="tag tag-sk">TypeScript</span>
+          <span class="tag tag-sk">GraphQL</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$6.000–$8.500 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 14 hari</span>
+            <span class="info-item">🌐 Bebas zona</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(0)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openJob(1)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#201600;color:#E6A020;">No</div>
+          <div class="card-meta">
+            <div class="card-title">Product Designer (UI/UX)</div>
+            <div class="card-company">Notion · Remote – APAC</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-new">Baru 5 jam</span>
+          <span class="tag tag-sk">Figma</span>
+          <span class="tag tag-sk">Prototyping</span>
+          <span class="tag tag-sk">Design System</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$4.500–$6.000 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 21 hari</span>
+            <span class="info-item">🕐 UTC+7–9</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(1)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openJob(2)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#001A0A;color:#2ECC71;">Gl</div>
+          <div class="card-meta">
+            <div class="card-title">Backend Engineer – Go / Kubernetes</div>
+            <div class="card-company">GitLab · Worldwide Remote</div>
+          </div>
+          <button class="save-btn on" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-hot">🔥 Populer</span>
+          <span class="tag tag-sk">Go</span>
+          <span class="tag tag-sk">Kubernetes</span>
+          <span class="tag tag-sk">PostgreSQL</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$5.500–$7.500 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 30 hari</span>
+            <span class="info-item">🌐 Bebas zona</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(2)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openJob(3)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#1A0030;color:#A060FF;">Cl</div>
+          <div class="card-meta">
+            <div class="card-title">Data Analyst – Growth & Retention</div>
+            <div class="card-company">Clearbit · Remote (APAC friendly)</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-sk">SQL</span>
+          <span class="tag tag-sk">Python</span>
+          <span class="tag tag-sk">dbt</span>
+          <span class="tag tag-sk">Looker</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$3.000–$4.500 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 10 hari</span>
+            <span class="info-item">🕐 UTC+7–10</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(3)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openJob(4)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#200010;color:#FF4466;">Tw</div>
+          <div class="card-meta">
+            <div class="card-title">DevRel Engineer / Technical Writer</div>
+            <div class="card-company">Twilio · Remote – Asia Pacific</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-new">Baru 1 hari</span>
+          <span class="tag tag-sk">Node.js</span>
+          <span class="tag tag-sk">Dokumentasi</span>
+          <span class="tag tag-sk">Public Speaking</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$4.000–$5.500 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 18 hari</span>
+            <span class="info-item">🕐 UTC+7–9</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(4)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openJob(5)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#001520;color:#00AADD;">Li</div>
+          <div class="card-meta">
+            <div class="card-title">Customer Success Manager</div>
+            <div class="card-company">Linear · Remote (Asia)</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-sk">SaaS</span>
+          <span class="tag tag-sk">Onboarding</span>
+          <span class="tag tag-sk">CRM</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$2.500–$3.800 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 25 hari</span>
+            <span class="info-item">🕐 UTC+7–8</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(5)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pg off">‹</button>
+      <button class="pg on" onclick="setPg(this)">1</button>
+      <button class="pg" onclick="setPg(this)">2</button>
+      <button class="pg" onclick="setPg(this)">3</button>
+      <button class="pg" style="pointer-events:none;border:none;background:transparent;color:var(--fg-faint)">…</button>
+      <button class="pg" onclick="setPg(this)">42</button>
+      <button class="pg" onclick="setPg(this)">›</button>
+    </div>
+  </main>
+</div>
+
+<!-- ===== JOB DETAIL MODAL ===== -->
+<div class="overlay" id="jobOverlay" onclick="closeOverlay('jobOverlay',event)">
+  <div class="modal" id="jobModal">
+    <button class="modal-close" onclick="closeModal('jobOverlay')">✕</button>
+    <div class="modal-logo-row">
+      <div class="modal-logo" id="mLogo" style="background:#0D2040;color:#5B9BD5;">St</div>
+      <div>
+        <div class="modal-co" id="mTitle">Senior Frontend Engineer</div>
+        <div class="modal-co-sub" id="mCo">Stripe · San Francisco (Remote)</div>
+      </div>
+    </div>
+    <div class="modal-salary" id="mSalary">$6.000–$8.500 <em>/bulan</em></div>
+    <div class="modal-meta" id="mMeta">
+      <div class="meta-pill">💼 Full-time</div>
+      <div class="meta-pill">🌐 Bebas zona waktu</div>
+      <div class="meta-pill">🇮🇩 Terbuka untuk WNI</div>
+      <div class="meta-pill">⏱ Tutup 14 hari lagi</div>
+    </div>
+    <div class="modal-section">
+      <h4>Tentang Posisi</h4>
+      <p id="mDesc">Bergabunglah dengan tim infrastruktur pembayaran global Stripe sebagai Senior Frontend Engineer. Kamu akan membangun antarmuka yang digunakan jutaan bisnis di seluruh dunia setiap harinya.</p>
+    </div>
+    <div class="modal-section">
+      <h4>Yang Kamu Kerjakan</h4>
+      <ul id="mResp">
+        <li>Membangun dan memelihara komponen UI yang digunakan jutaan pengguna</li>
+        <li>Berkolaborasi lintas tim dengan desainer dan engineer backend</li>
+        <li>Menulis kode TypeScript yang bersih, tertest, dan terdokumentasi</li>
+        <li>Berkontribusi pada standar aksesibilitas dan performa frontend</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h4>Kualifikasi</h4>
+      <ul id="mReqs">
+        <li>5+ tahun pengalaman frontend dengan React dan TypeScript</li>
+        <li>Pemahaman mendalam tentang GraphQL dan REST API</li>
+        <li>Kemampuan komunikasi dalam bahasa Inggris (tulis & lisan)</li>
+        <li>Pengalaman bekerja secara remote dan asinkron</li>
+      </ul>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('jobOverlay')">Tutup</button>
+      <button class="btn btn-accent" onclick="applyNow()">
+        Lamar Sekarang →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="overlay" id="authOverlay" onclick="closeOverlay('authOverlay',event)">
+  <div class="modal" style="max-width:420px;">
+    <button class="modal-close" onclick="closeModal('authOverlay')">✕</button>
+
+    <div style="margin-bottom:8px;">
+      <div style="font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;" id="authTitle">Selamat datang kembali</div>
+      <div style="font-size:0.875rem;color:var(--fg-soft);" id="authSub">Masuk untuk menyimpan lowongan dan melacak lamaranmu.</div>
+    </div>
+
+    <div class="auth-tabs" id="authTabs">
+      <div class="auth-tab on" onclick="switchTab('login')">Masuk</div>
+      <div class="auth-tab" onclick="switchTab('register')">Daftar</div>
+    </div>
+
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="nama@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kata Sandi</label>
+        <input class="form-input" type="password" placeholder="••••••••">
+        <div class="form-hint"><a href="#" style="color:var(--accent)">Lupa kata sandi?</a></div>
+      </div>
+      <button class="btn btn-accent" style="width:100%;height:42px;border-radius:12px;font-size:0.9375rem;margin-bottom:12px;" onclick="fakeLogin()">Masuk</button>
+      <div class="form-divider"><span>atau masuk dengan</span></div>
+      <button class="oauth-btn" onclick="fakeOAuth('Google')">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Lanjutkan dengan Google
+      </button>
+      <button class="oauth-btn" onclick="fakeOAuth('LinkedIn')">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="#0A66C2">
+          <path d="M16 0H2C.897 0 0 .897 0 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V2c0-1.103-.897-2-2-2zM5.5 14H3V7h2.5v7zM4.25 5.933A1.433 1.433 0 112.817 4.5 1.433 1.433 0 014.25 5.933zM15 14h-2.5v-3.5c0-1.381-.5-2-1.5-2s-1.5.619-1.5 2V14H7V7h2.5v1.119C10.167 7.286 11 7 12 7c1.933 0 3 1.267 3 3.5V14z"/>
+        </svg>
+        Lanjutkan dengan LinkedIn
+      </button>
+    </div>
+
+    <div id="registerForm" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap</label>
+        <input class="form-input" type="text" placeholder="Budi Santoso">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="nama@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kata Sandi</label>
+        <input class="form-input" type="password" placeholder="Minimal 8 karakter">
+      </div>
+      <button class="btn btn-accent" style="width:100%;height:42px;border-radius:12px;font-size:0.9375rem;margin-bottom:12px;" onclick="fakeRegister()">Buat Akun Gratis</button>
+      <div class="form-divider"><span>atau daftar dengan</span></div>
+      <button class="oauth-btn" onclick="fakeOAuth('Google')">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Daftar dengan Google
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOASTS ===== -->
+<div class="toasts" id="toastsEl"></div>
+
+<script>
+/* ─── DATA ─── */
+const jobs = [
+  { logo:'St', logoBg:'#0D2040', logoFg:'#5B9BD5', title:'Senior Frontend Engineer', co:'Stripe · San Francisco (Remote)', salary:'$6.000–$8.500', desc:'Bergabunglah dengan tim infrastruktur pembayaran global Stripe sebagai Senior Frontend Engineer. Kamu akan membangun antarmuka yang digunakan jutaan bisnis di seluruh dunia.', resp:['Membangun dan memelihara komponen UI yang digunakan jutaan pengguna','Berkolaborasi lintas tim dengan desainer dan engineer backend','Menulis kode TypeScript yang bersih, tertest, dan terdokumentasi','Berkontribusi pada standar aksesibilitas dan performa frontend'], reqs:['5+ tahun pengalaman frontend dengan React dan TypeScript','Pemahaman mendalam tentang GraphQL dan REST API','Kemampuan komunikasi dalam bahasa Inggris','Pengalaman bekerja secara remote dan asinkron'], meta:['💼 Full-time','🌐 Bebas zona waktu','🇮🇩 Terbuka untuk WNI','⏱ Tutup 14 hari'] },
+  { logo:'No', logoBg:'#201600', logoFg:'#E6A020', title:'Product Designer (UI/UX)', co:'Notion · Remote – APAC', salary:'$4.500–$6.000', desc:'Notion mencari Product Designer berbakat untuk bergabung dalam tim desain APAC. Kamu akan mendefinisikan pengalaman produk yang digunakan oleh jutaan tim produktif di Asia.', resp:['Merancang flow pengalaman pengguna dari riset sampai produksi','Membuat dan menjaga sistem desain produk Notion','Berkolaborasi dengan PM dan engineer di seluruh Asia','Menjalankan uji kegunaan dan menganalisis feedback'], reqs:['4+ tahun pengalaman UX/UI di produk SaaS','Mahir menggunakan Figma dan metode riset','Portofolio demonstrasi pemikiran desain sistem','Bahasa Inggris aktif'], meta:['💼 Full-time','🕐 UTC+7–9','🇮🇩 Terbuka untuk WNI','⏱ Tutup 21 hari'] },
+  { logo:'Gl', logoBg:'#001A0A', logoFg:'#2ECC71', title:'Backend Engineer – Go / Kubernetes', co:'GitLab · Worldwide Remote', salary:'$5.500–$7.500', desc:'GitLab adalah perusahaan remote-first terbesar di dunia. Kamu akan bekerja pada infrastruktur inti platform DevOps yang digunakan oleh lebih dari 30 juta pengguna.', resp:['Mengembangkan layanan backend Go yang berjalan di Kubernetes','Meningkatkan keandalan dan performa pipeline CI/CD','Menulis dokumentasi teknis dan melakukan code review','Berkontribusi pada roadmap teknis tim infrastruktur'], reqs:['3+ tahun pengalaman dengan Go','Pengalaman nyata dengan Kubernetes dan Docker','Pemahaman mendalam tentang database PostgreSQL','Kemampuan bekerja asinkron lintas zona waktu'], meta:['💼 Full-time','🌐 Bebas zona waktu','🇮🇩 Terbuka untuk WNI','⏱ Tutup 30 hari'] },
+  { logo:'Cl', logoBg:'#1A0030', logoFg:'#A060FF', title:'Data Analyst – Growth & Retention', co:'Clearbit · Remote (APAC friendly)', salary:'$3.000–$4.500', desc:'Clearbit mencari Data Analyst yang passion terhadap growth. Kamu akan menggali data jutaan perusahaan untuk membantu tim bisnis membuat keputusan berbasis data.', resp:['Menganalisis data pertumbuhan dan retensi pelanggan','Membangun dashboard di Looker untuk stakeholder bisnis','Bekerja sama dengan tim produk untuk eksperimen A/B','Mendokumentasikan model data dan pipeline dbt'], reqs:['2+ tahun pengalaman sebagai Data Analyst','Mahir SQL dan Python untuk analisis data','Pengalaman dengan dbt dan Looker atau tool serupa','Komunikasi efektif dengan tim non-teknis'], meta:['💼 Full-time','🕐 UTC+7–10','🇮🇩 Terbuka untuk WNI','⏱ Tutup 10 hari'] },
+  { logo:'Tw', logoBg:'#200010', logoFg:'#FF4466', title:'DevRel Engineer / Technical Writer', co:'Twilio · Remote – Asia Pacific', salary:'$4.000–$5.500', desc:'Twilio mencari Developer Relations Engineer untuk membangun komunitas developer di kawasan Asia Pasifik. Kamu akan menjadi jembatan antara Twilio dan ekosistem developer lokal.', resp:['Membuat tutorial, blog, dan dokumentasi teknis berkualitas tinggi','Berbicara di konferensi dan meetup developer di APAC','Mengumpulkan feedback dari developer dan menyampaikan ke tim produk','Membangun program community ambassador di Indonesia dan sekitarnya'], reqs:['Pengalaman pengembangan dengan Node.js atau Python','Kemampuan menulis teknis dalam Bahasa Inggris yang baik','Pengalaman berbicara di depan publik teknis','Jaringan komunitas developer di APAC (nilai tambah)'], meta:['💼 Full-time','🕐 UTC+7–9','🇮🇩 Terbuka untuk WNI','⏱ Tutup 18 hari'] },
+  { logo:'Li', logoBg:'#001520', logoFg:'#00AADD', title:'Customer Success Manager', co:'Linear · Remote (Asia)', salary:'$2.500–$3.800', desc:'Linear adalah alat manajemen proyek yang disukai tim engineering terbaik dunia. Kamu akan membantu tim-tim ini mendapatkan nilai maksimal dari Linear sebagai Customer Success Manager.', resp:['Onboarding pelanggan enterprise baru di kawasan Asia','Membangun hubungan jangka panjang dengan akun strategis','Mengidentifikasi peluang upsell dan ekspansi akun','Mengurangi churn dengan proaktif memantau kesehatan akun'], reqs:['2+ tahun pengalaman Customer Success di SaaS B2B','Kemampuan komunikasi yang sangat baik dalam Bahasa Inggris','Pemahaman dasar tentang workflow tim engineering','Orientasi data dalam memantau metrik kesehatan pelanggan'], meta:['💼 Full-time','🕐 UTC+7–8','🇮🇩 Terbuka untuk WNI','⏱ Tutup 25 hari'] },
+];
+
+/* ─── THEME ─── */
+let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  toast(dark ? '🌙 Tema gelap aktif' : '☀️ Tema terang aktif', 'teal');
+}
+
+/* ─── SEARCH ─── */
+function handleSearch(inp) {
+  const q = inp.value.toLowerCase().trim();
+  document.getElementById('searchClear').classList.toggle('visible', q.length > 0);
+  const cards = document.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(c => {
+    const show = !q || c.textContent.toLowerCase().includes(q);
+    c.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('resultCount').innerHTML = `${visible.toLocaleString('id')} lowongan <span>ditemukan</span>`;
+}
+function clearSearch() {
+  const inp = document.getElementById('searchInput');
+  inp.value = '';
+  inp.dispatchEvent(new Event('input'));
+  inp.focus();
+}
+
+/* ─── SIDEBAR ─── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ─── FILTER ─── */
+function toggleCat(chip) {
+  if (chip.textContent === 'Semua') {
+    document.querySelectorAll('#catChips .chip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+  } else {
+    document.querySelector('#catChips .chip').classList.remove('on'); // remove Semua
+    chip.classList.toggle('on');
+    const anyOn = [...document.querySelectorAll('#catChips .chip:not(:first-child)')].some(c => c.classList.contains('on'));
+    if (!anyOn) document.querySelector('#catChips .chip').classList.add('on');
+  }
+  toast('Filter kategori diperbarui', 'teal');
+}
+function resetFilters() {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  document.querySelector('#catChips .chip').classList.add('on');
+  document.querySelectorAll('.tog').forEach(t => t.classList.remove('on'));
+  document.getElementById('salMin').textContent = '$1.000';
+  document.getElementById('salMax').textContent = '$8.000';
+  toast('Semua filter direset', 'warn');
+}
+
+/* ─── SALARY RANGE ─── */
+function updateSalMin(v) {
+  document.getElementById('salMin').textContent = '$' + Number(v).toLocaleString('id');
+}
+function updateSalMax(v) {
+  document.getElementById('salMax').textContent = '$' + Number(v).toLocaleString('id');
+}
+
+/* ─── SAVE ─── */
+function toggleSave(btn) {
+  btn.classList.toggle('on');
+  const on = btn.classList.contains('on');
+  btn.innerHTML = on
+    ? `<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>`
+    : `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>`;
+  toast(on ? '🔖 Lowongan disimpan' : 'Dihapus dari tersimpan', on ? 'ok' : 'warn');
+}
+
+/* ─── VIEW ─── */
+function setView(v) {
+  const list = document.getElementById('jobList');
+  list.classList.toggle('grid', v === 'grid');
+  document.getElementById('listViewBtn').classList.toggle('on', v === 'list');
+  document.getElementById('gridViewBtn').classList.toggle('on', v === 'grid');
+}
+
+/* ─── SORT ─── */
+function sortJobs(val) {
+  toast('Urutan diperbarui: ' + (val === 'newest' ? 'Terbaru' : val === 'salary' ? 'Gaji tertinggi' : 'Perusahaan A–Z'), 'teal');
+}
+
+/* ─── PAGINATION ─── */
+function setPg(btn) {
+  if (!btn.textContent.match(/\d+/) && btn.textContent !== '›') return;
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  toast('Halaman ' + btn.textContent, 'teal');
+}
+
+/* ─── JOB MODAL ─── */
+function openJob(i) {
+  const j = jobs[i];
+  document.getElementById('mLogo').textContent = j.logo;
+  document.getElementById('mLogo').style.background = j.logoBg;
+  document.getElementById('mLogo').style.color = j.logoFg;
+  document.getElementById('mTitle').textContent = j.title;
+  document.getElementById('mCo').textContent = j.co;
+  document.getElementById('mSalary').innerHTML = j.salary + ' <em>/bulan</em>';
+  document.getElementById('mDesc').textContent = j.desc;
+  document.getElementById('mResp').innerHTML = j.resp.map(r => `<li>${r}</li>`).join('');
+  document.getElementById('mReqs').innerHTML = j.reqs.map(r => `<li>${r}</li>`).join('');
+  document.getElementById('mMeta').innerHTML = j.meta.map(m => `<div class="meta-pill">${m}</div>`).join('');
+  document.getElementById('jobOverlay').classList.add('open');
+}
+function applyNow() {
+  closeModal('jobOverlay');
+  setTimeout(() => openAuth('register'), 200);
+}
+
+/* ─── AUTH MODAL ─── */
+let currentTab = 'login';
+function openAuth(tab) {
+  switchTab(tab);
+  document.getElementById('authOverlay').classList.add('open');
+}
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('on', (i===0&&tab==='login')||(i===1&&tab==='register')));
+  document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('authTitle').textContent = tab === 'login' ? 'Selamat datang kembali' : 'Buat akun RemoteKerja';
+  document.getElementById('authSub').textContent = tab === 'login' ? 'Masuk untuk menyimpan lowongan dan melacak lamaranmu.' : 'Gratis selamanya. Mulai cari kerja remote impianmu.';
+}
+function fakeLogin() {
+  closeModal('authOverlay');
+  toast('✅ Berhasil masuk! Selamat datang.', 'ok');
+}
+function fakeRegister() {
+  closeModal('authOverlay');
+  toast('🎉 Akun berhasil dibuat! Selamat bergabung.', 'ok');
+}
+function fakeOAuth(provider) {
+  closeModal('authOverlay');
+  toast(`✅ Masuk dengan ${provider} berhasil!`, 'ok');
+}
+
+/* ─── MODAL UTILS ─── */
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function closeOverlay(id, e) {
+  if (e.target.id === id) closeModal(id);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') ['jobOverlay','authOverlay'].forEach(closeModal);
+});
+
+/* ─── TOAST ─── */
+function toast(msg, type = 'teal') {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<div class="toast-dot ${type}"></div><span>${msg}</span>`;
+  document.getElementById('toastsEl').appendChild(el);
+  setTimeout(() => {
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
+}
+</script>

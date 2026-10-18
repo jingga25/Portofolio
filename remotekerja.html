@@ -3,22 +3,30 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
 
 <style>
-/* ===== TOKENS — dark-first, vivid teal accent ===== */
+/* ===== TOKENS — dark-first, colorful multi-accent ===== */
 :root {
-  --bg:         #0D0F14;
-  --bg-2:       #151820;
-  --surface:    #1C202C;
-  --surface-2:  #232838;
-  --border:     #2A2F3F;
-  --border-2:   #353B50;
-  --fg:         #E8ECF5;
-  --fg-soft:    #8A92A8;
-  --fg-faint:   #4E5568;
-  --accent:     #00D4AA;
-  --accent-2:   #6C63FF;
-  --accent-3:   #FF6B6B;
-  --accent-glow:rgba(0,212,170,0.18);
-  --accent-bg:  rgba(0,212,170,0.10);
+  --bg:         #0F0B1E;
+  --bg-2:       #171230;
+  --surface:    #1D1838;
+  --surface-2:  #251F45;
+  --border:     #332B5A;
+  --border-2:   #42396E;
+  --fg:         #F1EEFF;
+  --fg-soft:    #A59FC8;
+  --fg-faint:   #6F6896;
+  --accent:     #00E0B0;
+  --accent-2:   #8B7BFF;
+  --accent-3:   #FF6B8B;
+  --accent-4:   #FFC83D;
+  --accent-5:   #FF4FB8;
+  --accent-6:   #3DB8FF;
+  --accent-glow:rgba(0,224,176,0.20);
+  --accent-bg:  rgba(0,224,176,0.12);
+  --nav-bg:     rgba(15,11,30,0.82);
+  --blob-a:     rgba(139,123,255,0.22);
+  --blob-b:     rgba(255,79,184,0.16);
+  --blob-c:     rgba(0,224,176,0.14);
+  --grad:       linear-gradient(135deg, var(--accent-5), var(--accent-2) 55%, var(--accent-6));
   --ok:         #34D399;
   --ok-bg:      rgba(52,211,153,0.10);
   --warn:       #FBBF24;
@@ -35,20 +43,27 @@
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --bg:         #F0F2F8;
-    --bg-2:       #E4E8F2;
+    --bg:         #F6F3FF;
+    --bg-2:       #ECE6FF;
     --surface:    #FFFFFF;
-    --surface-2:  #F7F8FC;
-    --border:     #D8DCE8;
-    --border-2:   #C8CDD E;
-    --fg:         #0F1220;
-    --fg-soft:    #5A6078;
-    --fg-faint:   #9EA5BC;
-    --accent:     #009E7E;
-    --accent-2:   #5248D9;
-    --accent-3:   #E05252;
-    --accent-glow:rgba(0,158,126,0.15);
-    --accent-bg:  rgba(0,158,126,0.08);
+    --surface-2:  #FAF8FF;
+    --border:     #E0D8F5;
+    --border-2:   #CFC4EE;
+    --fg:         #1A1433;
+    --fg-soft:    #5D5680;
+    --fg-faint:   #8F88B0;
+    --accent:     #00A383;
+    --accent-2:   #6A4CF0;
+    --accent-3:   #E8456B;
+    --accent-4:   #C98A00;
+    --accent-5:   #E0329A;
+    --accent-6:   #1F8FE0;
+    --accent-glow:rgba(0,163,131,0.16);
+    --accent-bg:  rgba(0,163,131,0.09);
+    --nav-bg:     rgba(246,243,255,0.85);
+    --blob-a:     rgba(106,76,240,0.14);
+    --blob-b:     rgba(224,50,154,0.10);
+    --blob-c:     rgba(0,163,131,0.10);
     --ok:         #059669;
     --ok-bg:      rgba(5,150,105,0.08);
     --warn:       #D97706;
@@ -59,20 +74,27 @@
   }
 }
 :root[data-theme="light"] {
-  --bg:         #F0F2F8;
-  --bg-2:       #E4E8F2;
+  --bg:         #F6F3FF;
+  --bg-2:       #ECE6FF;
   --surface:    #FFFFFF;
-  --surface-2:  #F7F8FC;
-  --border:     #D8DCE8;
-  --border-2:   #C8CDE0;
-  --fg:         #0F1220;
-  --fg-soft:    #5A6078;
-  --fg-faint:   #9EA5BC;
-  --accent:     #009E7E;
-  --accent-2:   #5248D9;
-  --accent-3:   #E05252;
-  --accent-glow:rgba(0,158,126,0.15);
-  --accent-bg:  rgba(0,158,126,0.08);
+  --surface-2:  #FAF8FF;
+  --border:     #E0D8F5;
+  --border-2:   #CFC4EE;
+  --fg:         #1A1433;
+  --fg-soft:    #5D5680;
+  --fg-faint:   #8F88B0;
+  --accent:     #00A383;
+  --accent-2:   #6A4CF0;
+  --accent-3:   #E8456B;
+  --accent-4:   #C98A00;
+  --accent-5:   #E0329A;
+  --accent-6:   #1F8FE0;
+  --accent-glow:rgba(0,163,131,0.16);
+  --accent-bg:  rgba(0,163,131,0.09);
+  --nav-bg:     rgba(246,243,255,0.85);
+  --blob-a:     rgba(106,76,240,0.14);
+  --blob-b:     rgba(224,50,154,0.10);
+  --blob-c:     rgba(0,163,131,0.10);
   --ok:         #059669;
   --ok-bg:      rgba(5,150,105,0.08);
   --warn:       #D97706;
@@ -92,6 +114,14 @@ html, body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
+body {
+  background:
+    radial-gradient(600px 400px at 8% -5%, var(--blob-a), transparent 70%),
+    radial-gradient(500px 380px at 95% 10%, var(--blob-b), transparent 70%),
+    radial-gradient(700px 500px at 60% 110%, var(--blob-c), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+}
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; font: inherit; border: none; background: none; color: inherit; }
 input, select { font: inherit; }
@@ -101,13 +131,16 @@ input, select { font: inherit; }
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 200;
-  background: rgba(13,15,20,0.85);
+  background: var(--nav-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
-:root[data-theme="light"] .nav,
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .nav { background: rgba(240,242,248,0.88); } }
+.nav::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-6), var(--accent-2), var(--accent-5), var(--accent-4));
+  opacity: 0.8;
+}
 .nav-inner {
   max-width: 1280px; margin: 0 auto;
   padding-left: max(20px, env(safe-area-inset-left, 0px));
@@ -123,12 +156,17 @@ input, select { font: inherit; }
 }
 .logo-icon {
   width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: linear-gradient(135deg, var(--accent-4), var(--accent-5) 50%, var(--accent-2));
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .logo-text { color: var(--fg); }
-.logo-text em { font-style: normal; color: var(--accent); }
+.logo-text em {
+  font-style: normal;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
 
 .search-wrap {
   flex: 1; max-width: 440px;
@@ -189,12 +227,12 @@ input, select { font: inherit; }
 .btn-ghost { border: 1px solid var(--border); background: var(--surface); color: var(--fg-soft); }
 .btn-ghost:hover { border-color: var(--border-2); color: var(--fg); background: var(--surface-2); }
 .btn-accent {
-  background: var(--accent); color: #0D1410;
-  box-shadow: 0 0 20px var(--accent-glow);
+  background: var(--grad); color: #fff;
+  box-shadow: 0 4px 20px rgba(255,79,184,0.25);
 }
 .btn-accent:hover {
   filter: brightness(1.1);
-  box-shadow: 0 0 28px var(--accent-glow);
+  box-shadow: 0 6px 28px rgba(139,123,255,0.35);
   transform: translateY(-1px);
 }
 .btn-accent:active { transform: translateY(0); }
@@ -235,11 +273,25 @@ input, select { font: inherit; }
   text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--fg-faint);
   margin-bottom: 12px;
+  display: flex; align-items: center; gap: 7px;
 }
+.panel-title::before {
+  content: ''; width: 8px; height: 8px; border-radius: 3px;
+  background: var(--pc, var(--accent));
+}
+.sidebar > .panel:nth-child(2) { --pc: var(--accent-5); }
+.sidebar > .panel:nth-child(3) { --pc: var(--accent-6); }
+.sidebar > .panel:nth-child(4) { --pc: var(--accent-4); }
+.sidebar > .panel:nth-child(5) { --pc: var(--accent-2); }
+.sidebar > .panel:nth-child(6) { --pc: var(--accent); }
 
 /* Stats grid */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; }
 .stat-cell { background: var(--surface-2); padding: 12px 10px; text-align: center; }
+.stat-cell:nth-child(1) { background: color-mix(in srgb, var(--accent) 12%, var(--surface-2)); }
+.stat-cell:nth-child(2) { background: color-mix(in srgb, var(--accent-2) 12%, var(--surface-2)); }
+.stat-cell:nth-child(3) { background: color-mix(in srgb, var(--accent-3) 12%, var(--surface-2)); }
+.stat-cell:nth-child(4) { background: color-mix(in srgb, var(--accent-4) 12%, var(--surface-2)); }
 .stat-n {
   font-size: 1.375rem; font-weight: 800; letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums; line-height: 1;
@@ -248,6 +300,7 @@ input, select { font: inherit; }
 .stat-n.teal { color: var(--accent); }
 .stat-n.purple { color: var(--accent-2); }
 .stat-n.coral { color: var(--accent-3); }
+.stat-n.yellow { color: var(--accent-4); }
 .stat-l { font-size: 0.6875rem; color: var(--fg-faint); }
 
 /* Chips */
@@ -260,8 +313,18 @@ input, select { font: inherit; }
   cursor: pointer; user-select: none;
   transition: all 0.15s;
 }
-.chip:hover { border-color: var(--accent); color: var(--accent); }
-.chip.on { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+.chip { --cc: var(--accent); }
+#catChips .chip:nth-child(7n+2) { --cc: var(--accent-6); }
+#catChips .chip:nth-child(7n+3) { --cc: var(--accent-5); }
+#catChips .chip:nth-child(7n+4) { --cc: var(--accent-2); }
+#catChips .chip:nth-child(7n+5) { --cc: var(--accent-4); }
+#catChips .chip:nth-child(7n+6) { --cc: var(--accent-3); }
+#catChips .chip:nth-child(7n+7) { --cc: var(--accent-6); }
+.chip:hover { border-color: var(--cc); color: var(--cc); }
+.chip.on {
+  background: color-mix(in srgb, var(--cc) 14%, transparent);
+  border-color: var(--cc); color: var(--cc);
+}
 
 /* Range */
 .range-labels { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--fg-soft); margin-bottom: 10px; }
@@ -284,7 +347,7 @@ input[type=range] {
   background: var(--border-2); position: relative;
   transition: background 0.2s; flex-shrink: 0;
 }
-.tog.on { background: var(--accent); }
+.tog.on { background: linear-gradient(90deg, var(--accent), var(--accent-6)); }
 .tog::after {
   content: ''; position: absolute; top: 3px; left: 3px;
   width: 14px; height: 14px; border-radius: 50%; background: #fff;
@@ -297,8 +360,11 @@ input[type=range] {
 
 /* Ticker */
 .ticker {
-  background: linear-gradient(90deg, var(--accent-bg), var(--bg));
-  border: 1px solid rgba(0,212,170,0.2);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    color-mix(in srgb, var(--accent-2) 12%, transparent) 50%,
+    color-mix(in srgb, var(--accent-5) 12%, transparent));
+  border: 1px solid color-mix(in srgb, var(--accent-2) 35%, transparent);
   border-radius: 10px;
   padding: 10px 14px;
   display: flex; align-items: center; gap: 10px;
@@ -355,33 +421,53 @@ input[type=range] {
 @media (max-width: 640px) { .job-list.grid { grid-template-columns: 1fr; } }
 
 .card {
-  background: var(--surface);
+  --c: var(--accent); --c2: var(--accent-6);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 7%, var(--surface)), var(--surface) 55%);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 18px 20px;
+  padding: 18px 20px 18px 23px;
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   position: relative; overflow: hidden;
 }
+.card:nth-child(6n+2) { --c: var(--accent-5); --c2: var(--accent-2); }
+.card:nth-child(6n+3) { --c: var(--accent-6); --c2: var(--accent); }
+.card:nth-child(6n+4) { --c: var(--accent-4); --c2: var(--accent-3); }
+.card:nth-child(6n+5) { --c: var(--accent-2); --c2: var(--accent-5); }
+.card:nth-child(6n)   { --c: var(--accent-3); --c2: var(--accent-4); }
 .card::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  opacity: 0; transition: opacity 0.2s;
+  position: absolute; top: 0; bottom: 0; left: 0; width: 3px;
+  background: linear-gradient(180deg, var(--c), var(--c2));
+  opacity: 0.85; transition: width 0.2s, opacity 0.2s;
 }
 .card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 4px 24px var(--accent-glow), 0 0 0 1px var(--accent);
+  border-color: var(--c);
+  box-shadow: 0 6px 28px color-mix(in srgb, var(--c) 25%, transparent), 0 0 0 1px var(--c);
   transform: translateY(-2px);
 }
-.card:hover::before { opacity: 1; }
-.card.featured { border-color: rgba(0,212,170,0.3); }
-.card.featured::before { opacity: 0.6; }
+.card:hover::before { opacity: 1; width: 4px; }
+.card.featured { border-color: color-mix(in srgb, var(--c) 40%, transparent); }
+.card .salary { color: var(--c); }
+.card .apply-btn {
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  border-color: color-mix(in srgb, var(--c) 35%, transparent);
+  color: var(--c);
+}
+.card .apply-btn:hover {
+  background: color-mix(in srgb, var(--c) 22%, transparent);
+  border-color: var(--c);
+}
+.card .tag-sk {
+  background: color-mix(in srgb, var(--c2) 10%, transparent);
+  border-color: color-mix(in srgb, var(--c2) 28%, transparent);
+  color: color-mix(in srgb, var(--c2) 70%, var(--fg));
+}
 
 .featured-label {
   position: absolute; top: 0; right: 0;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #0D1410;
+  background: var(--grad);
+  color: #fff;
   font-size: 0.625rem; font-weight: 800;
   letter-spacing: 0.08em; text-transform: uppercase;
   padding: 4px 12px;
@@ -454,7 +540,7 @@ input[type=range] {
   transition: all 0.15s; background: var(--surface);
 }
 .pg:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-.pg.on { background: var(--accent); border-color: var(--accent); color: #0D1410; }
+.pg.on { background: var(--grad); border-color: transparent; color: #fff; }
 .pg.off { opacity: 0.3; pointer-events: none; }
 
 /* ===== MODAL ===== */
@@ -502,7 +588,9 @@ input[type=range] {
 
 .modal-salary {
   font-family: var(--f-mono); font-size: 1.5rem; font-weight: 700;
-  color: var(--accent); margin-bottom: 16px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-6));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  width: fit-content; margin-bottom: 16px;
   font-variant-numeric: tabular-nums;
 }
 .modal-salary em { font-style: normal; font-size: 0.875rem; color: var(--fg-faint); font-family: var(--f-ui); }
@@ -670,7 +758,7 @@ input[type=range] {
           <div class="stat-l">Fully remote</div>
         </div>
         <div class="stat-cell">
-          <div class="stat-n">67</div>
+          <div class="stat-n yellow">67</div>
           <div class="stat-l">Negara tersedia</div>
         </div>
       </div>
@@ -812,7 +900,7 @@ input[type=range] {
           <span class="tag tag-sk">GraphQL</span>
         </div>
         <div class="card-footer">
-          <div class="salary">$6.000–$8.500 <em>/bln</em></div>
+          <div class="salary">$7.000–$9.000 <em>/bln</em></div>
           <div class="card-info">
             <span class="info-item">⏱ Tutup 14 hari</span>
             <span class="info-item">🌐 Bebas zona</span>
@@ -960,6 +1048,34 @@ input[type=range] {
         </div>
       </div>
 
+      <div class="card" onclick="openJob(6)">
+        <div class="card-top">
+          <div class="co-logo" style="background:#00200A;color:#00C853;">Go</div>
+          <div class="card-meta">
+            <div class="card-title">iOS Developer</div>
+            <div class="card-company">GoTo · Jakarta (Remote)</div>
+          </div>
+          <button class="save-btn" onclick="event.stopPropagation();toggleSave(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h10a1 1 0 011 1v11l-6-3-6 3V3a1 1 0 011-1z"/></svg>
+          </button>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ft">Full-time</span>
+          <span class="tag tag-new">Baru 3 jam</span>
+          <span class="tag tag-sk">Swift</span>
+          <span class="tag tag-sk">SwiftUI</span>
+          <span class="tag tag-sk">Combine</span>
+        </div>
+        <div class="card-footer">
+          <div class="salary">$3.500–$5.000 <em>/bln</em></div>
+          <div class="card-info">
+            <span class="info-item">⏱ Tutup 20 hari</span>
+            <span class="info-item">🕐 UTC+7</span>
+            <button class="apply-btn" onclick="event.stopPropagation();openJob(6)">Lamar →</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Pagination -->
@@ -986,7 +1102,7 @@ input[type=range] {
         <div class="modal-co-sub" id="mCo">Stripe · San Francisco (Remote)</div>
       </div>
     </div>
-    <div class="modal-salary" id="mSalary">$6.000–$8.500 <em>/bulan</em></div>
+    <div class="modal-salary" id="mSalary">$7.000–$9.000 <em>/bulan</em></div>
     <div class="modal-meta" id="mMeta">
       <div class="meta-pill">💼 Full-time</div>
       <div class="meta-pill">🌐 Bebas zona waktu</div>
@@ -1102,12 +1218,13 @@ input[type=range] {
 <script>
 /* ─── DATA ─── */
 const jobs = [
-  { logo:'St', logoBg:'#0D2040', logoFg:'#5B9BD5', title:'Senior Frontend Engineer', co:'Stripe · San Francisco (Remote)', salary:'$6.000–$8.500', desc:'Bergabunglah dengan tim infrastruktur pembayaran global Stripe sebagai Senior Frontend Engineer. Kamu akan membangun antarmuka yang digunakan jutaan bisnis di seluruh dunia.', resp:['Membangun dan memelihara komponen UI yang digunakan jutaan pengguna','Berkolaborasi lintas tim dengan desainer dan engineer backend','Menulis kode TypeScript yang bersih, tertest, dan terdokumentasi','Berkontribusi pada standar aksesibilitas dan performa frontend'], reqs:['5+ tahun pengalaman frontend dengan React dan TypeScript','Pemahaman mendalam tentang GraphQL dan REST API','Kemampuan komunikasi dalam bahasa Inggris','Pengalaman bekerja secara remote dan asinkron'], meta:['💼 Full-time','🌐 Bebas zona waktu','🇮🇩 Terbuka untuk WNI','⏱ Tutup 14 hari'] },
+  { logo:'St', logoBg:'#0D2040', logoFg:'#5B9BD5', title:'Senior Frontend Engineer', co:'Stripe · San Francisco (Remote)', salary:'$7.000–$9.000', desc:'Bergabunglah dengan tim infrastruktur pembayaran global Stripe sebagai Senior Frontend Engineer. Kamu akan membangun antarmuka yang digunakan jutaan bisnis di seluruh dunia.', resp:['Membangun dan memelihara komponen UI yang digunakan jutaan pengguna','Berkolaborasi lintas tim dengan desainer dan engineer backend','Menulis kode TypeScript yang bersih, tertest, dan terdokumentasi','Berkontribusi pada standar aksesibilitas dan performa frontend'], reqs:['5+ tahun pengalaman frontend dengan React dan TypeScript','Pemahaman mendalam tentang GraphQL dan REST API','Kemampuan komunikasi dalam bahasa Inggris','Pengalaman bekerja secara remote dan asinkron'], meta:['💼 Full-time','🌐 Bebas zona waktu','🇮🇩 Terbuka untuk WNI','⏱ Tutup 14 hari'] },
   { logo:'No', logoBg:'#201600', logoFg:'#E6A020', title:'Product Designer (UI/UX)', co:'Notion · Remote – APAC', salary:'$4.500–$6.000', desc:'Notion mencari Product Designer berbakat untuk bergabung dalam tim desain APAC. Kamu akan mendefinisikan pengalaman produk yang digunakan oleh jutaan tim produktif di Asia.', resp:['Merancang flow pengalaman pengguna dari riset sampai produksi','Membuat dan menjaga sistem desain produk Notion','Berkolaborasi dengan PM dan engineer di seluruh Asia','Menjalankan uji kegunaan dan menganalisis feedback'], reqs:['4+ tahun pengalaman UX/UI di produk SaaS','Mahir menggunakan Figma dan metode riset','Portofolio demonstrasi pemikiran desain sistem','Bahasa Inggris aktif'], meta:['💼 Full-time','🕐 UTC+7–9','🇮🇩 Terbuka untuk WNI','⏱ Tutup 21 hari'] },
   { logo:'Gl', logoBg:'#001A0A', logoFg:'#2ECC71', title:'Backend Engineer – Go / Kubernetes', co:'GitLab · Worldwide Remote', salary:'$5.500–$7.500', desc:'GitLab adalah perusahaan remote-first terbesar di dunia. Kamu akan bekerja pada infrastruktur inti platform DevOps yang digunakan oleh lebih dari 30 juta pengguna.', resp:['Mengembangkan layanan backend Go yang berjalan di Kubernetes','Meningkatkan keandalan dan performa pipeline CI/CD','Menulis dokumentasi teknis dan melakukan code review','Berkontribusi pada roadmap teknis tim infrastruktur'], reqs:['3+ tahun pengalaman dengan Go','Pengalaman nyata dengan Kubernetes dan Docker','Pemahaman mendalam tentang database PostgreSQL','Kemampuan bekerja asinkron lintas zona waktu'], meta:['💼 Full-time','🌐 Bebas zona waktu','🇮🇩 Terbuka untuk WNI','⏱ Tutup 30 hari'] },
   { logo:'Cl', logoBg:'#1A0030', logoFg:'#A060FF', title:'Data Analyst – Growth & Retention', co:'Clearbit · Remote (APAC friendly)', salary:'$3.000–$4.500', desc:'Clearbit mencari Data Analyst yang passion terhadap growth. Kamu akan menggali data jutaan perusahaan untuk membantu tim bisnis membuat keputusan berbasis data.', resp:['Menganalisis data pertumbuhan dan retensi pelanggan','Membangun dashboard di Looker untuk stakeholder bisnis','Bekerja sama dengan tim produk untuk eksperimen A/B','Mendokumentasikan model data dan pipeline dbt'], reqs:['2+ tahun pengalaman sebagai Data Analyst','Mahir SQL dan Python untuk analisis data','Pengalaman dengan dbt dan Looker atau tool serupa','Komunikasi efektif dengan tim non-teknis'], meta:['💼 Full-time','🕐 UTC+7–10','🇮🇩 Terbuka untuk WNI','⏱ Tutup 10 hari'] },
   { logo:'Tw', logoBg:'#200010', logoFg:'#FF4466', title:'DevRel Engineer / Technical Writer', co:'Twilio · Remote – Asia Pacific', salary:'$4.000–$5.500', desc:'Twilio mencari Developer Relations Engineer untuk membangun komunitas developer di kawasan Asia Pasifik. Kamu akan menjadi jembatan antara Twilio dan ekosistem developer lokal.', resp:['Membuat tutorial, blog, dan dokumentasi teknis berkualitas tinggi','Berbicara di konferensi dan meetup developer di APAC','Mengumpulkan feedback dari developer dan menyampaikan ke tim produk','Membangun program community ambassador di Indonesia dan sekitarnya'], reqs:['Pengalaman pengembangan dengan Node.js atau Python','Kemampuan menulis teknis dalam Bahasa Inggris yang baik','Pengalaman berbicara di depan publik teknis','Jaringan komunitas developer di APAC (nilai tambah)'], meta:['💼 Full-time','🕐 UTC+7–9','🇮🇩 Terbuka untuk WNI','⏱ Tutup 18 hari'] },
   { logo:'Li', logoBg:'#001520', logoFg:'#00AADD', title:'Customer Success Manager', co:'Linear · Remote (Asia)', salary:'$2.500–$3.800', desc:'Linear adalah alat manajemen proyek yang disukai tim engineering terbaik dunia. Kamu akan membantu tim-tim ini mendapatkan nilai maksimal dari Linear sebagai Customer Success Manager.', resp:['Onboarding pelanggan enterprise baru di kawasan Asia','Membangun hubungan jangka panjang dengan akun strategis','Mengidentifikasi peluang upsell dan ekspansi akun','Mengurangi churn dengan proaktif memantau kesehatan akun'], reqs:['2+ tahun pengalaman Customer Success di SaaS B2B','Kemampuan komunikasi yang sangat baik dalam Bahasa Inggris','Pemahaman dasar tentang workflow tim engineering','Orientasi data dalam memantau metrik kesehatan pelanggan'], meta:['💼 Full-time','🕐 UTC+7–8','🇮🇩 Terbuka untuk WNI','⏱ Tutup 25 hari'] },
+  { logo:'Go', logoBg:'#00200A', logoFg:'#00C853', title:'iOS Developer', co:'GoTo · Jakarta (Remote)', salary:'$3.500–$5.000', desc:'GoTo, ekosistem digital terbesar di Indonesia, mencari iOS Developer untuk membangun pengalaman mobile Gojek dan Tokopedia yang digunakan puluhan juta pengguna setiap hari.', resp:['Membangun dan memelihara fitur aplikasi iOS dengan Swift dan SwiftUI','Berkolaborasi dengan desainer, PM, dan engineer backend dalam squad lintas fungsi','Meningkatkan performa, stabilitas, dan ukuran aplikasi','Menulis unit test dan UI test serta melakukan code review'], reqs:['3+ tahun pengalaman pengembangan iOS dengan Swift','Pemahaman arsitektur MVVM/VIPER dan reactive programming (Combine/RxSwift)','Pengalaman merilis aplikasi ke App Store','Kemampuan bekerja remote dengan komunikasi yang baik'], meta:['💼 Full-time','🕐 UTC+7','🇮🇩 Terbuka untuk WNI','⏱ Tutup 20 hari'] },
 ];
 
 /* ─── THEME ─── */
